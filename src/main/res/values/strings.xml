@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Autosewa</string>
+    <string name="start_info">See autos nearby you</string>
+    <string name="get_phone">Namaste,\nPlease enter your\nphone number</string>
+    <string name="example_number">9841019323</string>
+    <string name="nepal_flag">nepal_flag</string>
+    <string name="back">Back</string>
+    <string name="next">Continue</string>
+    <string name="enter_username">Now,\nEnter your\nusername</string>
+    <string name="moto">सेकेन्डमा अटो पाउनुहोस्|</string>
+    <string name="intro">Welcome to \nAutosewa</string>
+    <string name="get_started">Get Started</string>
+    <string name="main_img">An old man in auto</string>
+    <string name="intro_page_layout">layout design of intro page</string>
+    <string name="otp_message">Enter the OTP code\nfor verification</string>
+</resources>

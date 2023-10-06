@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:backgroundTint="#fa040e"
+    app:cardCornerRadius="15dp"
+    app:cardElevation="10dp"
+    app:cardUseCompatPadding="true"
+    card_view:cardCornerRAdius="5dp">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:paddingStart="15dp"
+        android:scaleX="2.3"
+        android:scaleY="2.3"
+        android:src="@drawable/nepal" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_marginStart="10dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="3dp">
+
+        <TextView
+            android:id="@+id/pradesh_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-condensed"
+            android:gravity="center"
+            android:scaleX="0.8"
+            android:text="बागमती प्रदेश ०२"
+            android:textColor="@color/white"
+            android:textSize="20pt"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/lot_num"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="serif"
+            android:gravity="center"
+            android:scaleX="1.6"
+            android:scaleY="1.2"
+            android:text="०३१प"
+            android:textColor="@color/white"
+            android:textSize="20pt"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/vehicle_num"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:scaleX="1.5"
+            android:scaleY="1.2"
+            android:text="९४२३"
+            android:textColor="@color/white"
+            android:textSize="20pt"
+            android:textStyle="bold" />
+
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

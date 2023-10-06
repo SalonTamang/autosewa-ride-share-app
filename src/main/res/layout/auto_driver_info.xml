@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/profile_container"
+    android:padding="10dp"
+    android:background="@drawable/border"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+
+   <LinearLayout
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:gravity="start">
+       <de.hdodenhof.circleimageview.CircleImageView
+           android:id="@+id/driver_image"
+           android:layout_width="70dp"
+           android:layout_height="70dp"
+           android:layout_gravity="center"
+           android:src="@drawable/pic"
+           app:civ_border_width="1dp"
+           app:civ_border_color="@color/white"/>
+
+
+       <TextView
+           android:id="@+id/textView"
+           android:layout_width="130dp"
+           android:layout_height="match_parent"
+           android:textSize="17sp"
+           android:textColor="@color/black"
+           android:textStyle="bold"
+           android:gravity="center"
+           android:padding="10dp"
+           android:clickable="true"
+           android:focusable="true"
+           android:text="salon tamang" />
+
+       <TextView
+           android:layout_width="wrap_content"
+           android:layout_height="match_parent"
+           android:text="(240m)"
+           android:padding="5dp"
+           android:textColor="@color/black"
+           android:gravity="center" />
+   </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="10dp"
+        android:gravity="end">
+
+            <ImageView
+                android:id="@+id/favorite"
+                android:layout_width="70dp"
+                android:contentDescription="fav_image"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:padding="20dp"
+                android:src="@drawable/love"/>
+
+
+            <ImageView
+                android:id="@+id/phone"
+                android:contentDescription="phone image"
+                android:layout_width="70dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:background="@color/white"
+                android:padding="20dp"
+                android:src="@drawable/phone" />
+
+    </LinearLayout>
+</LinearLayout>
+
