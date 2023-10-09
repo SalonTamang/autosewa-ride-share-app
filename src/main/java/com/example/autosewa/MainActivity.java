@@ -9,13 +9,13 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.Color;
+
 import android.location.Location;
 
 import com.google.android.gms.common.api.ResolvableApiException;
@@ -37,7 +37,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-import android.Manifest;
 import android.provider.Settings;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -50,7 +49,6 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
@@ -75,7 +73,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
 
 
     private static final int REQUEST_CODE_FINE_LOCATION = 1001;
@@ -84,8 +82,9 @@ public class MainActivity extends AppCompatActivity {
     FusedLocationProviderClient fusedLocationProviderClient;
     LocationRequest locationRequest;
     private GoogleMap myMap;
+    private Marker cameraMarker;
     //expanding the auto list
-    private LinearLayout mBottomSheetLayout;
+    private LinearLayout linearLayout;
     private BottomSheetBehavior sheetBehavior;
     private ImageView header_Arrow_Image;
 
@@ -94,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
     TextInputEditText textInputEditText, editUserName;
 
     Button back, next, editProfile;
+    ImageView profilePage;
 
     ProgressBar progressBar;
 
@@ -143,8 +143,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         //putting the auto drivers info
-        mBottomSheetLayout = findViewById(R.id.bottom_sheet_layout);
-        sheetBehavior = BottomSheetBehavior.from(mBottomSheetLayout);
+        linearLayout = findViewById(R.id.bottom_sheet_layout);
+        sheetBehavior = BottomSheetBehavior.from(linearLayout);
         header_Arrow_Image = findViewById(R.id.bottom_sheet_arrow);
 
         header_Arrow_Image.setOnClickListener(new View.OnClickListener() {
@@ -170,6 +170,16 @@ public class MainActivity extends AppCompatActivity {
                 header_Arrow_Image.setRotation(slideOffset * 180);
             }
         });
+
+        //onclick profile button
+        profilePage = (ImageView) findViewById(R.id.profile_image);
+        profilePage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, Profile.class);
+                startActivity(intent);
+            }
+        });
     }
 
 
@@ -193,16 +203,17 @@ public class MainActivity extends AppCompatActivity {
         }
         fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper());
     }
-   private void stopLocationUpdates(){
+
+    private void stopLocationUpdates() {
         fusedLocationProviderClient.removeLocationUpdates(locationCallback);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             checkSettingsAndStartLocationUpdates();
-        } else{
+        } else {
             requestPermission();
         }
 
@@ -223,7 +234,7 @@ public class MainActivity extends AppCompatActivity {
         locationSettingsResponseTask.addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                if(e instanceof ResolvableApiException){
+                if (e instanceof ResolvableApiException) {
                     ResolvableApiException apiException = (ResolvableApiException) e;
                     try {
                         apiException.startResolutionForResult(MainActivity.this, 1234);
@@ -258,7 +269,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-
         myMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
             @Override
             public void onMarkerDrag(@NonNull Marker marker) {
@@ -279,34 +289,34 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-        // getting user permission for location
+    // getting user permission for location
 
 
-        public void requestPermission() {
+    public void requestPermission() {
 
-            if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                // Permission is NOT granted
-                if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)) {
-                    new AlertDialog.Builder(MainActivity.this)
-                            .setMessage("We need permission for fine location")
-                            .setCancelable(false)
-                            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    ActivityCompat.requestPermissions(MainActivity.this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE_FINE_LOCATION);
-                                }
-                            })
-                            .show();
-                } else {
-                    ActivityCompat.requestPermissions(MainActivity.this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE_FINE_LOCATION);
-                }
-
+        if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // Permission is NOT granted
+            if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)) {
+                new AlertDialog.Builder(MainActivity.this)
+                        .setMessage("We need permission for fine location")
+                        .setCancelable(false)
+                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE_FINE_LOCATION);
+                            }
+                        })
+                        .show();
             } else {
-                // Permission is Granted
-                Toast.makeText(this,"Permission Granted", Toast.LENGTH_SHORT).show();
+                ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE_FINE_LOCATION);
             }
 
+        } else {
+            // Permission is Granted
+            Toast.makeText(this, "Permission Granted", Toast.LENGTH_SHORT).show();
         }
+
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -362,11 +372,10 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            if(charSequence.length() > 10){
+            if (charSequence.length() > 10) {
                 textInputLayout.findViewById(R.id.phone_layout);
                 textInputLayout.setError("No more!");
-            }
-            else if(charSequence.length() < 10) {
+            } else if (charSequence.length() < 10) {
                 textInputLayout.findViewById(R.id.phone_layout);
                 textInputLayout.setError(null);
             }
@@ -387,11 +396,10 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            if(charSequence.length() > 100){
+            if (charSequence.length() > 100) {
                 usernameLayout.findViewById(R.id.username_layout);
                 usernameLayout.setError("No more!");
-            }
-            else if(charSequence.length() < 100) {
+            } else if (charSequence.length() < 100) {
                 usernameLayout.findViewById(R.id.username_layout);
                 usernameLayout.setError(null);
             }
@@ -404,17 +412,76 @@ public class MainActivity extends AppCompatActivity {
     };
 
     //for user data verification
-    public void phoneVerification(){
+    public void phoneVerification() {
         //phone number validation
         textInputEditText = findViewById(R.id.user_number);
         textInputLayout.findViewById(R.id.phone_layout);
 
         //check to see if phone layout has no error
-        if(textInputLayout.getError() == null){
+//        if (textInputLayout.getError() == null) {
+//
+//        }
 
+
+    }
+
+    @Override
+    public void onMapReady(@NonNull GoogleMap googleMap) {
+        myMap = googleMap;
+        myMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+            zoomToUserLocation();
+        } else{
+            requestPermission();
         }
+    }
 
+    //zoom to user's exact location
+    private void zoomToUserLocation() {
+        @SuppressLint("MissingPermission") Task<Location> locationTask = fusedLocationProviderClient.getLastLocation();
+        locationTask.addOnSuccessListener(new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
+                if(location != null){
+                    LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+                    final LatLng[] latLng1 = {new LatLng(myMap.getCameraPosition().target.latitude, myMap.getCameraPosition().target.longitude)};
+                    myMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17));
 
+                    myMap.addMarker(new MarkerOptions().position(latLng).rotation(location.getBearing()).icon(BitmapDescriptorFactory.fromResource(R.drawable.marker)).title("You are here!").snippet("Drag map to change position"));
+
+                    myMap.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
+                        @Override
+                        public void onCameraMove() {
+                            latLng1[0] = new LatLng(myMap.getCameraPosition().target.latitude, myMap.getCameraPosition().target.longitude);
+
+                            //Remove previous center if it exists
+                            if (cameraMarker != null) {
+                                cameraMarker.remove();
+                            }
+
+                            MarkerOptions marker = new MarkerOptions()
+                                    .position(latLng1[0])
+                                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.plus))
+                                    .draggable(true)
+                                    .zIndex(0);
+                            cameraMarker = myMap.addMarker(marker);
+
+                        }
+                    });
+
+                    myMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
+                        @Override
+                        public void onCameraIdle() {
+
+                        }
+                    });
+
+                } else{
+                    requestPermission();
+                }
+
+            }
+        });
     }
 
     //inner class to perform network request extending an AsyncTask
@@ -498,6 +565,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "Please enter your username", Toast.LENGTH_SHORT).show();
             }
         });
+        editUserName = findViewById(R.id.edit_username);
         editUserName.addTextChangedListener(usernameWatcher);
 
     }
@@ -513,5 +581,13 @@ public class MainActivity extends AppCompatActivity {
         textInputEditText = findViewById(R.id.user_number);
         textInputEditText.addTextChangedListener(textWatcher);
     }
+    //function to take user data from input field and add to the database
+    public void createUser(){
+        textInputLayout = (TextInputLayout) findViewById(R.id.phone_layout);
+        String phoneNumber = textInputLayout.getEditText().getText().toString().trim();
+
+
+    }
+
 
 }
