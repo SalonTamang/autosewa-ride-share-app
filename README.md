@@ -1,2 +1,2 @@
 # autosewa
-Working on it
+Introducing "Autosewa," the premier ride-sharing Android app tailored specifically for the vibrant city of Hetauda. Navigating the bustling streets of this unique urban landscape has never been easier. HetauRide is not just your typical ride-sharing app; it's crafted with a special focus on auto-rickshaws, affectionately known as tuk-tuks, ensuring a seamless and efficient travel experience for both locals and visitors alike.
