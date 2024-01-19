@@ -5,7 +5,7 @@ Introducing "Autosewa," the premier ride-sharing Android app tailored specifical
 With Autosewa, users can effortlessly hail a tuk-tuk with just a few taps on their smartphones. Our user-friendly interface provides real-time tracking, allowing passengers to monitor their ride's progress and estimated arrival time. Safety is our top priority, as all our tuk-tuk drivers undergo thorough background checks and adhere to strict safety standards.
 
 # 📓 Learning from this project 
-Through Autosewa, I have learned new techonologies **`android development`**, **`distance measurement using location`**, **`live location tracking`**, **`java database connectivity`** and **`google maps servies`**.
+Through Autosewa, I have learned new techonologies such as **`android development`**, **`distance measurement using location`**, **`live location tracking`**, **`java database connectivity`** and **`google maps servies`**.
 
 # 🧰 Languages and Tools
 
